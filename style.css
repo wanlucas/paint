@@ -69,6 +69,13 @@ main {
   background: hsl(0, 0%, 86%);
 }
 
+.painting {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  height: 100%;
+}
+
 .painting-coordinates {
   background: white;
   width: 100%;

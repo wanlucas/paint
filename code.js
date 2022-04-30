@@ -55,7 +55,7 @@ function createInputEvents() {
     clicking = true;
     paintPixel(path[0]);
   });
-  painting.addEventListener('mouseup', () => clicking = false); 
+  window.addEventListener('mouseup', () => clicking = false); 
 
   painting.addEventListener('mousemove', ({ path }) =>
     paintPixel(path[0]

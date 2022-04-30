@@ -1,4 +1,4 @@
-var clicking;
+var clicking, actualColor;
 
 function createPainting(width, height) {
   const paintingHTML = document.getElementById('painting');
@@ -23,14 +23,22 @@ function paintPixel(pixel) {
   }
 }
 
-window.addEventListener('load', () => {
-  createPainting(100,50);
-  window.addEventListener('mousedown', ({ path }) => {
+function createInputEvents() {
+  const painting = document.getElementById('painting');
+
+  painting.addEventListener('mousedown', ({ path }) => {
     clicking = true;
     paintPixel(path[0]);
   });
-  window.addEventListener('mouseup', () => clicking = false); 
-  window.addEventListener('mousemove', ({ path }) =>
+
+  painting.addEventListener('mouseup', () => clicking = false); 
+  
+  painting.addEventListener('mousemove', ({ path }) =>
     paintPixel(path[0]
   ));
+}
+
+window.addEventListener('load', () => {
+  createPainting(100,50);
+  createInputEvents();
 });

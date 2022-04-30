@@ -1,4 +1,4 @@
-const initialColors = ['red', 'green', 'blue', 'yellow', 'black', 'brown'];
+const initialColors = ['black', 'red', 'green', 'blue', 'yellow', 'brown'];
 
 var clicking, actualColor;
 
@@ -12,7 +12,7 @@ function createColorPalette() {
     color.style.backgroundColor = colorValue;
     color.addEventListener('click', ({ path }) => 
       changePencilColor(path[0])
-      ); 
+    ); 
       
     colorPaletteHTML.appendChild(color);
   });
@@ -36,10 +36,15 @@ function createPainting(width, height) {
 }
 
 function changePencilColor(colorElement) {
+  const colorPaletteHTML = document.getElementById('colors');
   const color = colorElement.style.backgroundColor;
 
-  actualColor =  color;
-  colorElement.classList.toggle('selected');
+  actualColor = color;
+
+  colorPaletteHTML.querySelectorAll('.color').forEach((colorElement) => 
+    colorElement.classList = 'color'
+  );
+  colorElement.classList.add('selected');
 }
 
 function paintPixel(pixel) {
@@ -64,6 +69,7 @@ function createInputEvents() {
 
 window.addEventListener('load', () => {
   createColorPalette();
-  createPainting(100,50);
+  createPainting(100, 50);
   createInputEvents();
+  actualColor = 'black';
 });

@@ -1,19 +1,18 @@
+var clicking;
+
 function createPainting(width, height) {
   const paintingHTML = document.getElementById('painting');
   const painting = document.createElement('table');
-
-  painting.classList.add('painting');
 
   for(let line = 0 ; line < height ; line++) {
     painting.appendChild(document.createElement('tr'));
     
     for(let col = 0 ; col < width ; col++) {
-      const pixel = document.createElement('div');
+      const pixel = document.createElement('td');
 
       pixel.classList.add('pixel');
-      pixel.style.width = paintingHTML.offsetWidth / width + 'px';
-      pixel.style.height = paintingHTML.offsetHeight / height + 'px';
-
+      pixel.addEventListener('mouseover', ({ path }) => paintPixel(pixel));
+    
       painting.lastChild.appendChild(pixel);
     };
   };
@@ -21,6 +20,14 @@ function createPainting(width, height) {
   paintingHTML.appendChild(painting);
 }
 
+function paintPixel(pixel) {
+  if(clicking) {
+    pixel.style.backgroundColor = 'black'; 
+  }
+}
+
 window.addEventListener('load', () => {
-  createPainting(100,100);
+  createPainting(100,50);
+  window.addEventListener('mousedown', () => clicking = true);
+  window.addEventListener('mouseup', () => clicking = false); 
 });

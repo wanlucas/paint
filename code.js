@@ -1,10 +1,15 @@
-const initialColors = ['black', 'red', 'green', 'blue', 'yellow', 'brown'];
+const colorPaletteHTML = document.getElementById('colors');
+const display = document.getElementById('display');
+const canvas = display.querySelector('canvas');
+const c = canvas.getContext('2d');
 
+const initialColors = ['black', 'red', 'green', 'blue', 'yellow', 'brown', 'orange'];
 var clicking, actualColor;
 
-function createColorPalette() {
-  const colorPaletteHTML = document.getElementById('colors');
+canvas.width = display.offsetWidth;
+canvas.height = display.offsetHeight;
 
+function createColorPalette() {
   initialColors.forEach((colorValue) => {
     const color = document.createElement('li');
 
@@ -18,58 +23,40 @@ function createColorPalette() {
   });
 }
 
-function createPainting(width, height) {
-  const paintingHTML = document.getElementById('painting');
-  const painting = document.createElement('table');
-
-  for(let line = 0 ; line < height ; line++) {
-    painting.appendChild(document.createElement('tr'));
-
-    for(let col = 0 ; col < width ; col++) {
-      const pixel = document.createElement('td');
-
-      pixel.classList.add('pixel');
-      painting.lastChild.appendChild(pixel);
-    };
-  };
-  paintingHTML.appendChild(painting);
-}
-
 function changePencilColor(colorElement) {
-  const colorPaletteHTML = document.getElementById('colors');
   const color = colorElement.style.backgroundColor;
 
   actualColor = color;
-
   colorPaletteHTML.querySelectorAll('.color').forEach((colorElement) => 
     colorElement.classList = 'color'
   );
   colorElement.classList.add('selected');
 }
 
-function paintPixel(pixel) {
+function paintPixel(x,y) {
   if(clicking) {
-    pixel.style.backgroundColor = actualColor; 
+    c.beginPath();
+    c.fillStyle = actualColor;
+    c.arc(x, y, 1, 0, Math.PI * 2);
+    c.fill();
+    c.closePath();
   }
 }
 
 function createInputEvents() {
-  const painting = document.getElementById('painting');
-
-  painting.addEventListener('mousedown', ({ path }) => {
+  canvas.addEventListener('mousedown', ({ offsetX, offsetY }) => {
     clicking = true;
-    paintPixel(path[0]);
+    paintPixel(offsetX, offsetY);
   });
   window.addEventListener('mouseup', () => clicking = false); 
 
-  painting.addEventListener('mousemove', ({ path }) =>
-    paintPixel(path[0]
-  ));
+  canvas.addEventListener('mousemove', ({ offsetX, offsetY }) =>
+    paintPixel(offsetX, offsetY)
+  );
 }
 
 window.addEventListener('load', () => {
   createColorPalette();
-  createPainting(100, 50);
   createInputEvents();
   actualColor = 'black';
 });

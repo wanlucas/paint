@@ -8,24 +8,27 @@ canvas.width = display.offsetWidth;
 canvas.height = display.offsetHeight;
 
 const config = {
-  pencilType: 1,
-  pencilColor: 'black'
+  pencilColor: 'black',
+  lineWidth: 1,
+  initialColors : [
+    'black', 'red', 'green', 'blue',
+    'yellow', 'brown', 'orange', 'snow'
+  ],
 };
 
-const initialColors = ['black', 'red', 'green', 'blue', 'yellow', 'brown', 'orange'];
-var clicking;
+var drawing = false;
 
 function createColorPalette() {
-  initialColors.forEach((colorValue) => {
-    const color = document.createElement('li');
+  config.initialColors.forEach((color) => {
+    const colorElement = document.createElement('li');
 
-    color.classList.add('color');
-    color.style.backgroundColor = colorValue;
-    color.addEventListener('click', ({ path }) => 
+    colorElement.classList.add('color');
+    colorElement.style.backgroundColor = color;
+    colorElement.addEventListener('click', ({ path }) => 
       changePencilColor(path[0])
     ); 
-      
-    colorPaletteHTML.appendChild(color);
+
+    colorPaletteHTML.appendChild(colorElement);
   });
 }
 
@@ -36,34 +39,37 @@ function changePencilColor(colorElement) {
   colorPaletteHTML.querySelectorAll('.color').forEach((colorElement) => 
     colorElement.classList = 'color'
   );
+
   colorElement.classList.add('selected');
 }
 
+function startDrawing() {
+  drawing = true;
+  c.lineWidth = config.lineWidth;
+  c.strokeStyle = config.pencilColor;
+  c.lineCap = 'round';
+
+  paintPixel(e);
+}
+
+function stopDrawing() {
+  drawing = false;
+  c.beginPath();
+}
+
 function mouseMoving(e) {
-  if(clicking) paintPixel(e);
+  if(drawing) paintPixel(e);
   coordinatesHTML.innerText = `${e.offsetX}, ${e.offsetY}px`;
 }
 
 function paintPixel(e) {
-  c.strokeStyle = config.pencilColor;
-  c.lineWidth = 10;
-  c.lineCap = 'round';
-  
   c.lineTo(e.offsetX, e.offsetY);
   c.stroke();
 }
 
 function createInputEvents() {
-  canvas.addEventListener('mousedown', (e) => {
-    clicking = true;
-    paintPixel(e);
-  });
-
-  window.addEventListener('mouseup', () => {
-    clicking = false;
-    c.beginPath();
-  }); 
-  
+  canvas.addEventListener('mousedown', startDrawing);
+  window.addEventListener('mouseup', stopDrawing); 
   canvas.addEventListener('mousemove', mouseMoving);
 }
 

@@ -43,7 +43,7 @@ function changePencilColor(colorElement) {
   colorElement.classList.add('selected');
 }
 
-function startDrawing() {
+function startDrawing(e) {
   drawing = true;
   c.lineWidth = config.lineWidth;
   c.strokeStyle = config.pencilColor;

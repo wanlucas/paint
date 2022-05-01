@@ -1,13 +1,14 @@
 const colorPaletteHTML = document.getElementById('colors');
 const display = document.getElementById('display');
+const coordinatesHTML = document.getElementById('cursor-coordinates');
+
 const canvas = display.querySelector('canvas');
 const c = canvas.getContext('2d');
+canvas.width = display.offsetWidth;
+canvas.height = display.offsetHeight;
 
 const initialColors = ['black', 'red', 'green', 'blue', 'yellow', 'brown', 'orange'];
 var clicking, actualColor;
-
-canvas.width = display.offsetWidth;
-canvas.height = display.offsetHeight;
 
 function createColorPalette() {
   initialColors.forEach((colorValue) => {
@@ -33,14 +34,17 @@ function changePencilColor(colorElement) {
   colorElement.classList.add('selected');
 }
 
+function mouseMoving(x,y) {
+  if(clicking) paintPixel(x,y);
+  coordinatesHTML.innerText = `${x}, ${y}px`;
+}
+
 function paintPixel(x,y) {
-  if(clicking) {
-    c.beginPath();
-    c.fillStyle = actualColor;
-    c.arc(x, y, 1, 0, Math.PI * 2);
-    c.fill();
-    c.closePath();
-  }
+  c.beginPath();
+  c.fillStyle = actualColor;
+  c.arc(x, y, 1, 0, Math.PI * 2);
+  c.fill();
+  c.closePath();
 }
 
 function createInputEvents() {
@@ -51,7 +55,7 @@ function createInputEvents() {
   window.addEventListener('mouseup', () => clicking = false); 
 
   canvas.addEventListener('mousemove', ({ offsetX, offsetY }) =>
-    paintPixel(offsetX, offsetY)
+    mouseMoving(offsetX, offsetY)
   );
 }
 

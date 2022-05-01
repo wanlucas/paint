@@ -78,9 +78,15 @@ main {
   height: 100%;
 }
 
-.painting-coordinates {
+.painting-footer {
+  display: flex;
+  align-items: center;
   background: white;
+  padding: 0 10px;
   width: 100%;
   flex-basis: 5%;
 }
 
+#cursor-coordinates {
+  font-size: 0.8rem;
+}

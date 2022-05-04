@@ -30,6 +30,10 @@ main {
   background: white;
 }
 
+.painting-header > * {
+  margin: 0 20px;
+}
+
 .color-options {
   width: 20%;
   min-width: 120px;
@@ -55,6 +59,11 @@ main {
   height: 23px;
   margin: 3px;
   border-radius: 2px;
+}
+
+.tool {
+  width: 20px;
+  object-fit: cover;
 }
 
 .color.selected {

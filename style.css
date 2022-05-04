@@ -22,7 +22,7 @@ main {
 
 .painting-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   width: 100%;
   flex-basis: 15%;
@@ -30,25 +30,21 @@ main {
   background: white;
 }
 
-.painting-header > * {
-  border-right: 1px solid hsla(0, 0%, 0%, 0.2);
-  padding: 0 10px;
-  text-align: center;
-}
-
 .color-options {
   width: 20%;
-  min-width: 140px;
+  min-width: 120px;
+  text-align: center;
 }
 
 .color-options h2 {
   font-size: 0.8rem;
-  padding: 2px;
+  padding: 8px;
 }
 
 #colors {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   max-height: 65px;
 }
 

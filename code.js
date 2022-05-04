@@ -9,14 +9,15 @@ canvas.height = display.offsetHeight;
 
 const config = {
   pencilColor: 'black',
-  lineWidth: 1,
+  actualTool: 'pencil',
+  lineWidth: 2,
   initialColors : [
     'black', 'red', 'green', 'blue',
     'yellow', 'brown', 'orange', 'snow'
   ],
 };
 
-var drawing = false;
+var clicking = false;
 
 function createColorPalette() {
   config.initialColors.forEach((color) => {
@@ -44,7 +45,7 @@ function changePencilColor(colorElement) {
 }
 
 function startDrawing(e) {
-  drawing = true;
+  clicking = true;
   c.lineWidth = config.lineWidth;
   c.strokeStyle = config.pencilColor;
   c.lineCap = 'round';
@@ -53,13 +54,22 @@ function startDrawing(e) {
 }
 
 function stopDrawing() {
-  drawing = false;
+  clicking = false;
   c.beginPath();
 }
 
 function mouseMoving(e) {
-  if(drawing) paintPixel(e);
   coordinatesHTML.innerText = `${e.offsetX}, ${e.offsetY}px`;
+
+  if(!clicking) return;
+
+  switch(config.actualTool) {
+    case 'pencil': paintPixel(e);
+    break;
+
+    case 'eraser': erasePixel(e);
+    break;
+  };
 }
 
 function paintPixel(e) {
@@ -67,10 +77,22 @@ function paintPixel(e) {
   c.stroke();
 }
 
+function erasePixel(e) {
+  c.clearRect(
+    e.offsetX, e.offsetY, 
+    config.lineWidth * 5,
+    config.lineWidth * 5
+  );
+}
+
 function createInputEvents() {
   canvas.addEventListener('mousedown', startDrawing);
   window.addEventListener('mouseup', stopDrawing); 
   canvas.addEventListener('mousemove', mouseMoving);
+
+  document.querySelector('.tools').addEventListener('click', ()=> {
+    config.actualTool = document.getElementById('pencil').checked ?  'pencil' : 'eraser';
+  });
 }
 
 window.addEventListener('load', () => {

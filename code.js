@@ -45,12 +45,14 @@ function changePencilColor(colorElement) {
 }
 
 function startDrawing(e) {
+  config.lineWidth = document.getElementById('size').value;
+
   clicking = true;
   c.lineWidth = config.lineWidth;
   c.strokeStyle = config.pencilColor;
   c.lineCap = 'round';
 
-  paintPixel(e);
+  if(config.actualTool === 'pencil') paintPixel(e);
 }
 
 function stopDrawing() {
